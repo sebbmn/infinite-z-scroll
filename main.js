@@ -1,8 +1,17 @@
 import './style.css'
 
-document.querySelector('#app').innerHTML = `
-  <h1>Infinite z Scroll</h1>
-  <div class="content">
-    <div class="scrollable-div"></div>
-  </div>
-`
+let scale = 1
+const el = document.querySelector('#scrollable-div')
+
+const zoom = (e) => {
+  scale += e.deltaY * -0.01
+
+  // Restrict scale
+  scale = Math.min(Math.max(.125, scale), 4)
+
+  // Apply scale transform
+  el.style.transform = `scale(${scale})`
+}
+
+document.addEventListener('wheel', zoom)
+
