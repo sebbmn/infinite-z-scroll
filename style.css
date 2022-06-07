@@ -23,16 +23,14 @@ body {
 }
 
 .scrollable-div {
-  width: 160px;
-  height: 90px;
-  border: 1px solid black;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.inner-div {
-  width: 16px;
-  height: 9px;
+.scrollable-div-item {
   border: 1px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
