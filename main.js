@@ -5,16 +5,24 @@ const ratio = 9 / 16
 
 const zoom = (e) => {
   const scale = 1 + (e.deltaY * 0.01)
+  const root = el.children[0]
+  const width = Math.round(scale * root.clientWidth)
+  const height = Math.round(width * ratio)
 
-  let element = el.children[0]
-  let width = Math.round(scale * element.clientWidth)
-  let height = Math.round(width * ratio)
+  rescaleTree(root, width, height)
+}
 
-  while (element) {
+const rescaleTree = (element, width, height) => {
+  if (element) {
     resize(element, width, height)
+
     element = element.children[0]
     width = width / 5
     height = Math.round(width * ratio)
+
+    rescaleTree(element, width, height)
+  } else {
+    return
   }
 }
 
