@@ -1,20 +1,30 @@
 import './style.css'
 
-const el = document.querySelector('#scrollable-div')
 const ratio = 9 / 16
 
-//window.innerWidth
-//window.innerHeight
-
 const initLayout = () => {
-  let root = document.querySelector('#scrollable-div')
-  appendChild(3, root)
+  const root = document.querySelector('#scrollable-div')
+  const topParent = document.createElement('div')
+  const windowRatio = window.innerHeight / window.innerWidth
+
+  const startWidth = ratio < windowRatio ? window.innerHeight / ratio : window.innerWidth
+  const startHeight = ratio < windowRatio ? window.innerHeight : window.innerWidth * ratio 
+
+  topParent.className = 'scrollable-div-item'
+  topParent.style = `width:${startWidth}px;height:${startHeight}px`
+
+  root.append(topParent)
+
+  appendChild(3, topParent)
 }
 
 const appendChild = (depth, parent) => {
   const divItem = document.createElement('div')
+  const width = parent.clientWidth / 5
+  const height = Math.round(width * ratio)
+
   divItem.className = 'scrollable-div-item'
-  divItem.style = `width:${50}px;height:${50}px`
+  divItem.style = `width:${width}px;height:${height}px`
 
   parent.append(divItem)
   depth--
@@ -27,7 +37,7 @@ const appendChild = (depth, parent) => {
 
 const zoom = (e) => {
   const scale = 1 + (e.deltaY * 0.01)
-  const root = el.children[0]
+  const root = document.querySelector('#scrollable-div').children[0]
 
   const width = Math.round(scale * root.clientWidth)
   const height = Math.round(width * ratio)
