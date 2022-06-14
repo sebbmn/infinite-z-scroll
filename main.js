@@ -36,20 +36,21 @@ const appendChild = (depth, parent) => {
 
 const zoom = (e) => {
   const scale = 1 + (e.deltaY * 0.01)
-  const root = document.querySelector('#scrollable-div').children[0]
+  const root = document.querySelector('#scrollable-div')
   const topParent = root.children[0]
+  const topChild = topParent.children[0]
 
-  const width = Math.round(scale * root.clientWidth)
+  const width = Math.round(scale * topParent.clientWidth)
   const height = Math.round(width * ratio)
 
-  if (topParent.clientWidth > window.innerWidth && topParent.clientHeight > window.innerHeight) {
+  if (topChild.clientWidth > window.innerWidth && topChild.clientHeight > window.innerHeight) {
     scaleUpTree(root)
   }
   if (width < window.innerWidth && height < window.innerHeight) {
     scaleDownTree(root)
   }
 
-  resizeTree(root, width, height)
+  resizeTree(topParent, width, height)
 }
 
 const resizeTree = (element, width, height) => {
@@ -72,8 +73,19 @@ const resize = (element, width, height) => {
 }
 
 const scaleUpTree = (root) => {
-  // TODO: scale up logic
-  console.log('up', root)
+  const topParent = root.children[0]
+  const topChild = topParent.children[0]
+
+  root.removeChild(topParent)
+  root.append(topChild)
+
+  let element = topChild
+
+  while (element.children[0]) {
+    element = element.children[0]
+  }
+
+  appendChild(0, element)
 }
 
 const scaleDownTree = (root) => {
