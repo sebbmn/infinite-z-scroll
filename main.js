@@ -1,29 +1,24 @@
 import './style.css'
 
-const ratio = 9 / 16
+const SCREEN_RATIO = 9 / 16
 
 const initLayout = () => {
   const windowRatio = window.innerHeight / window.innerWidth
   const root = document.querySelector('#scrollable-div')
 
-  const startWidth = ratio < windowRatio ? window.innerHeight / ratio : window.innerWidth
-  const startHeight = ratio < windowRatio ? window.innerHeight : window.innerWidth * ratio 
+  const startWidth = SCREEN_RATIO < windowRatio ? window.innerHeight / SCREEN_RATIO : window.innerWidth
+  const startHeight = SCREEN_RATIO < windowRatio ? window.innerHeight : window.innerWidth * SCREEN_RATIO 
 
-  const topParent = document.createElement('div')
-  topParent.className = 'scrollable-div-item'
-  resize(topParent, startWidth, startHeight)
+  const topParent = createDivItem(startWidth, startHeight)
 
   root.append(topParent)
   growTree(3, topParent)
 }
 
 const growTree = (levels, root) => {
-  const divItem = document.createElement('div')
   const width = root.clientWidth / 5
-  const height = Math.round(width * ratio)
-
-  divItem.className = 'scrollable-div-item'
-  resize(divItem, width, height)
+  const height = Math.round(width * SCREEN_RATIO)
+  const divItem = createDivItem(width, height)
 
   root.append(divItem)
   levels--
@@ -34,14 +29,24 @@ const growTree = (levels, root) => {
   }
 }
 
+const createDivItem = (width, height) => {
+  const divItem = document.createElement('div')
+
+  divItem.className = 'scrollable-div-item'
+  divItem.style.background = `#${Math.floor(Math.random()*16777215).toString(16)}`
+  resize(divItem, width, height)
+
+  return divItem
+}
+
 const zoom = (e) => {
-  const scale = 1 + (e.deltaY * 0.01)
+  const scale = 1 + (e.deltaY * 0.001)
   const root = document.querySelector('#scrollable-div')
   const topParent = root.children[0]
   const topChild = topParent.children[0]
 
   const width = Math.round(scale * topParent.clientWidth)
-  const height = Math.round(width * ratio)
+  const height = Math.round(width * SCREEN_RATIO)
 
   if (topChild.clientWidth > window.innerWidth && topChild.clientHeight > window.innerHeight) {
     scaleUpTree(root)
@@ -59,7 +64,7 @@ const resizeTree = (element, width, height) => {
 
     element = element.children[0]
     width = width / 5
-    height = Math.round(width * ratio)
+    height = Math.round(width * SCREEN_RATIO)
 
     resizeTree(element, width, height)
   } else {
@@ -73,7 +78,6 @@ const resize = (element, width, height) => {
 }
 
 const scaleUpTree = (root) => {
-  console.log('up')
   const topParent = root.children[0]
   const topChild = topParent.children[0]
 
@@ -86,18 +90,22 @@ const scaleUpTree = (root) => {
 }
 
 const scaleDownTree = (root) => {
-  // TODO: scale down logic
-  console.log('down')
+  const topParent = root.children[0]
+  const newTop = createDivItem(topParent.clientWidth * 5, topParent.clientHeight * 5)
+
+  root.append(newTop)
+  newTop.append(topParent)
+
+  const botomChild = getBotomChild(root)
+  botomChild.parentNode.removeChild(botomChild)
 }
 
 const getBotomChild = (top) => {
-  let botomChild = top
-
-  while (botomChild.children[0]) {
-    botomChild = botomChild.children[0]
+  if (top.children[0]) {
+    return getBotomChild(top.children[0])
+  } else {
+    return top
   }
-
-  return botomChild
 }
 
 document.addEventListener('wheel', zoom)
