@@ -14,23 +14,23 @@ const initLayout = () => {
   resize(topParent, startWidth, startHeight)
 
   root.append(topParent)
-  appendChild(3, topParent)
+  growTree(3, topParent)
 }
 
-const appendChild = (depth, parent) => {
+const growTree = (levels, root) => {
   const divItem = document.createElement('div')
-  const width = parent.clientWidth / 5
+  const width = root.clientWidth / 5
   const height = Math.round(width * ratio)
 
   divItem.className = 'scrollable-div-item'
   resize(divItem, width, height)
 
-  parent.append(divItem)
-  depth--
+  root.append(divItem)
+  levels--
 
-  if (depth > 0) {
-    parent = parent.children[0]
-    appendChild(depth, parent)
+  if (levels > 0) {
+    root = root.children[0]
+    growTree(levels, root)
   }
 }
 
@@ -73,24 +73,31 @@ const resize = (element, width, height) => {
 }
 
 const scaleUpTree = (root) => {
+  console.log('up')
   const topParent = root.children[0]
   const topChild = topParent.children[0]
 
   root.removeChild(topParent)
   root.append(topChild)
 
-  let element = topChild
+  const botomChild = getBotomChild(topChild)
 
-  while (element.children[0]) {
-    element = element.children[0]
-  }
-
-  appendChild(0, element)
+  growTree(0, botomChild)
 }
 
 const scaleDownTree = (root) => {
   // TODO: scale down logic
-  console.log('down', root)
+  console.log('down')
+}
+
+const getBotomChild = (top) => {
+  let botomChild = top
+
+  while (botomChild.children[0]) {
+    botomChild = botomChild.children[0]
+  }
+
+  return botomChild
 }
 
 document.addEventListener('wheel', zoom)
