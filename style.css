@@ -21,6 +21,7 @@ body {
 }
 
 .scrollable-div-item {
+  border-radius: 3px;
   display: flex;
   justify-content: center;
   align-items: center;
