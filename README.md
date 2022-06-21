@@ -1,22 +1,33 @@
 <p align="center">
-  <img src="" width="50%"/>
+  <img src="assets/images/Infinite_z_scroll.png" width="50%"/>
 </p>
 
 # infinite-z-scroll
-> some quote... | *Some author, ...*
 
-- Infinite scroll on the z axis
-- Stack of nested div with push/pop mechanism on scroll
-- Random generated background color
-- Use Vite for fast developement & build
-- :star2: Only standard JS/HTML/CSS
+- ➰ Infinite scroll on the z axis
+- ♻️ Stack of nested div with push/pop mechanism on scroll
+- 🎲 Random generated background color
+- ⚡ Use Vite for fast developement & build
+- 🌟 JS/HTML/CSS only
 
 ## Prerequisite
-* NPM
+* [Node](https://nodejs.org/en/)
+* [Vite](https://github.com/vitejs/vite)
+
 ## Getting started
 1. Clone this repo
-2. cd to the root directory
-3.  ``` npm -i```
+2. Install
+```bash 
+npm install
+```
+3. Run for development (with hot reload)
+```bash 
+npm run dev
+```
+4. Build ( => /dist)
+```bash 
+npm run build
+```
 
 ## Demo
 https://sebbmn.github.io/infinite-z-scroll/
