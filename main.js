@@ -1,6 +1,6 @@
 import './style.css'
 
-const SCREEN_RATIO = 9 / 16
+const SCREEN_RATIO = 1 // 9 / 16
 
 /* */
 const initLayout = () => {
